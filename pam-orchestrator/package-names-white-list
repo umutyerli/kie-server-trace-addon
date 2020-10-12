@@ -1,0 +1,9 @@
+com.malware.listener
+com.malware.tracelisteners
+com.malware.tracelisteners.model
+com.malware.tracelisteners.messaging
+com.malware.client.jms
+com.malware.**
+com.malware.model
+com.malware.tracelisteners.events
+com.malware.tracelisteners.marshalling

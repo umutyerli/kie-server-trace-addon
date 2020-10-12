@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: build-config-template
+objects:
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      labels:
+        app: ${SERVICE}
+      name: ${SERVICE}
+    spec:
+      output:
+        pushSecret:
+          name: artifactory
+        to:
+          kind: DockerImage
+          name: ${DOCKER_REPO_URL}/${IMAGE_NAMESPACE}/${SERVICE}:latest
+      postCommit: {}
+      resources: {}
+      runPolicy: Serial
+      source:
+        type: Binary
+      strategy:
+
+        dockerStrategy:
+          dockerfilePath: ./Dockerfile
+        type: Docker
+      triggers: []
+parameters:
+  - name: NAMESPACE
+    displayName: Namespace (Openshift project)
+    description: Openshift project this application resides in
+    required: true
+  - name: DOCKER_REPO_URL
+    displayName: Docker Repo URL
+    description: Docker repository URL
+    required: true
+  - name: SERVICE
+    displayName: Service Name
+    description: Service Name
+    required: true
+  - name: IMAGE_NAMESPACE
+    required: true
+    displayName: Artifactory name
