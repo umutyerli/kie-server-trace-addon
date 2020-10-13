@@ -17,6 +17,7 @@
   <modules>
     <module>pam-orchestrator</module>
     <module>kie-server</module>
+    <module>trace-event-listeners</module>
   </modules>
 
 </project>

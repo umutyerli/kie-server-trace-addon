@@ -3,6 +3,7 @@ EXPOSE 8090
 ENV HOME /opt/app
 ENV M2_HOME /home/jboss/.m2
 ENV KJAR_VERSION 1.0.0-SNAPSHOT
+ENV TEL_KJAR_VERSION 1.0-SNAPSHOT
 ENV KJAR_ARTIFACT com.malware:AnalysisWorkflow:${KJAR_VERSION}
 WORKDIR /opt/app
 
@@ -14,10 +15,15 @@ COPY kie-server/target/*.jar /opt/app/target/app.jar
 # Copy settings.xml into maven home
 COPY kie-server/src/main/docker/settings.xml ${M2_HOME}/settings.xml
 
-# Add kjar and pom.xml into maven local cache
+# Add PAM ORCHESTRATOR kjar and pom.xml into maven local cache
 RUN mkdir -p ${M2_HOME}/repository/com/malware/AnalysisWorkflow/${KJAR_VERSION}
 COPY pam-orchestrator/target/AnalysisWorkflow-${KJAR_VERSION}.jar ${M2_HOME}/repository/com/malware/AnalysisWorkflow/${KJAR_VERSION}/AnalysisWorkflow-${KJAR_VERSION}.jar
 COPY pam-orchestrator/pom.xml ${M2_HOME}/repository/com/malware/AnalysisWorkflow/${KJAR_VERSION}/AnalysisWorkflow-${KJAR_VERSION}.pom
+
+# Add TRACE EVENT LISTENER kjar and pom.xml into maven local cache
+RUN mkdir -p ${M2_HOME}/repository/com/malware/trace-event-listeners/${TEL_KJAR_VERSION}
+COPY trace-event-listeners/target/trace-event-listeners-${TEL_KJAR_VERSION}.jar ${M2_HOME}/repository/com/malware/trace-event-listeners/${TEL_KJAR_VERSION}/trace-event-listeners-${KJAR_VERSION}.jar
+COPY trace-event-listeners/pom.xml ${M2_HOME}/repository/com/malware/trace-event-listeners/${KJAR_VERSION}/trace-event-listeners-${KJAR_VERSION}.pom
 
 # Add kie server state xml
 COPY kie-server/AnalysisWorkflow-service.xml /opt/app/AnalysisWorkflow-service.xml
